@@ -1,8 +1,12 @@
 import 'package:animal_list/presenter/main_list_item.dart';
 import 'package:animal_list/presenter/main_presenter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:github_sign_in/github_sign_in.dart';
 import 'package:hooks_riverpod/all.dart';
 
 Future<void> main() async {
@@ -35,10 +39,15 @@ class MainPage extends StatelessWidget {
           title: Text("Animal list"),
         ),
         body: HookBuilder(builder: (context) {
-          final futureMainList = useProvider(mainListPresenter);
-          final snapshot = useFuture(futureMainList);
+          final context = useContext();
+          final futureMainUiModel = useProvider(mainUiModelPresenter);
+          final snapshot = useFuture(futureMainUiModel);
           if (snapshot.hasData) {
-            final items = snapshot.data.map((e) => _buildListItem(e)).toList();
+            final items =
+                snapshot.data.items.map((e) => _buildListItem(context, e)).toList();
+            if (snapshot.data.showAuth) {
+              items.insert(0, _buildLoginButton(context));
+            }
             return ListView(children: items);
           } else {
             return Center(child: CircularProgressIndicator());
@@ -46,8 +55,7 @@ class MainPage extends StatelessWidget {
         }));
   }
 
-  Container _buildListItem(MainListItem item) {
-    final context = useContext();
+  Container _buildListItem(BuildContext context, MainListItem item) {
     final textStyle = Theme.of(context).textTheme.bodyText2;
     return Container(
       margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -55,5 +63,26 @@ class MainPage extends StatelessWidget {
         Text(item.name, overflow: TextOverflow.ellipsis, style: textStyle),
       ]),
     );
+  }
+
+  Container _buildLoginButton(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+        child: SignInButton(Buttons.GitHub, onPressed: () {
+          signInWithGitHub(context);
+        }));
+  }
+
+  Future<UserCredential> signInWithGitHub(BuildContext context) async {
+    final GitHubSignIn gitHubSignIn = GitHubSignIn(
+        clientId: '1cb2b31d32bc47ac579f',
+        clientSecret: 'fcb4e0c691e2e7c997b8dba64f22be9821b76c02',
+        redirectUrl:
+            'https://tfandkusu-flutter-study.firebaseapp.com/__/auth/handler');
+    final result = await gitHubSignIn.signIn(context);
+    final AuthCredential githubAuthCredential =
+        GithubAuthProvider.credential(result.token);
+    return await FirebaseAuth.instance
+        .signInWithCredential(githubAuthCredential);
   }
 }
