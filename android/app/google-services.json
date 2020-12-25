@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "204213377359",
+    "firebase_url": "https://tfandkusu-flutter-study.firebaseio.com",
+    "project_id": "tfandkusu-flutter-study",
+    "storage_bucket": "tfandkusu-flutter-study.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204213377359:android:62e760c72d11827990cd3a",
+        "android_client_info": {
+          "package_name": "com.tfandkusu.animal_list"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204213377359-2g0ube0sge3au1fg1h7adgpn56ll79v6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-HN3Pfm6LDj48g1UKE9dvnwQjcxz2-FM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204213377359-2g0ube0sge3au1fg1h7adgpn56ll79v6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "204213377359-l3i1vogaec3ip0suoevg662j2ul2dfe9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tfandkusu.observeFirestore"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204213377359:android:8fd15e48c029d35190cd3a",
+        "android_client_info": {
+          "package_name": "com.tfandkusu.observe_firestore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204213377359-2g0ube0sge3au1fg1h7adgpn56ll79v6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-HN3Pfm6LDj48g1UKE9dvnwQjcxz2-FM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204213377359-2g0ube0sge3au1fg1h7adgpn56ll79v6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "204213377359-l3i1vogaec3ip0suoevg662j2ul2dfe9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tfandkusu.observeFirestore"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
