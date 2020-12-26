@@ -5,7 +5,13 @@ import 'package:hooks_riverpod/all.dart';
 
 import 'main_ui_model.dart';
 
-final mainUiModelPresenter = Provider.autoDispose((ref) async {
+/// ログアウトボタン表示Provider
+final logoutProvider = Provider.autoDispose((ref) async {
+  final futureAuth = ref.watch(authStreamProvider.last);
+  return await futureAuth;
+});
+
+final mainUiModelProvider = Provider.autoDispose((ref) async {
   final futureAnimalList = ref.watch(animalListStreamProvider.last);
   final futureAuth = ref.watch(authStreamProvider.last);
   final animalList = await futureAnimalList;

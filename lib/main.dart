@@ -31,20 +31,30 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainPage extends StatelessWidget {
+class MainPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final futureLogout = useProvider(logoutProvider);
+    final logout = useFuture(futureLogout);
+    final iconButtons = List<IconButton>();
+    if (logout.hasData && logout.data) {
+      iconButtons.add(IconButton(
+          icon: Icon(Icons.logout),
+          tooltip: "ログアウト",
+          onPressed: () {
+            _signOut();
+          }));
+    }
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Animal list"),
-        ),
+        appBar: AppBar(title: Text("Animal list"), actions: iconButtons),
         body: HookBuilder(builder: (context) {
           final context = useContext();
-          final futureMainUiModel = useProvider(mainUiModelPresenter);
+          final futureMainUiModel = useProvider(mainUiModelProvider);
           final snapshot = useFuture(futureMainUiModel);
           if (snapshot.hasData) {
-            final items =
-                snapshot.data.items.map((e) => _buildListItem(context, e)).toList();
+            final items = snapshot.data.items
+                .map((e) => _buildListItem(context, e))
+                .toList();
             if (snapshot.data.showAuth) {
               items.insert(0, _buildLoginButton(context));
             }
@@ -53,6 +63,11 @@ class MainPage extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
         }));
+  }
+
+  /// ログアウトする
+  _signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   Container _buildListItem(BuildContext context, MainListItem item) {
@@ -69,11 +84,11 @@ class MainPage extends StatelessWidget {
     return Container(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
         child: SignInButton(Buttons.GitHub, onPressed: () {
-          signInWithGitHub(context);
+          _signInWithGitHub(context);
         }));
   }
 
-  Future<UserCredential> signInWithGitHub(BuildContext context) async {
+  Future<UserCredential> _signInWithGitHub(BuildContext context) async {
     final GitHubSignIn gitHubSignIn = GitHubSignIn(
         clientId: '1cb2b31d32bc47ac579f',
         clientSecret: 'fcb4e0c691e2e7c997b8dba64f22be9821b76c02',
