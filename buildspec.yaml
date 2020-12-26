@@ -1,0 +1,7 @@
+version: 0.2
+phases:
+  build:
+    # 単体テストを実行する
+    commands:
+      - flutter pub get
+      - flutter test
