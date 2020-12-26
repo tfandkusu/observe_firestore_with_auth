@@ -1,3 +1,5 @@
+<img src="https://codebuild.ap-northeast-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiem5sYi9PcGZ5UXkvUEdFWk1YTWVmeE5GRFVvenY1b2tLYVVaSkJXcnVlSXd1NVRzNkowWjFPQUkyMmRDMm9GTm9MMlRCRHhLQ0tKQlpkdHNoWjhUbk1ZPSIsIml2UGFyYW1ldGVyU3BlYyI6Ilczcjl1b3N0NjFUZnY4UWQiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main">
+
 # Animal list
 
 Qiita記事「[RiverpodでFirestoreとFirebase AuthをStreamProviderで組み合わせる](https://qiita.com/tfandkusu/items/e6446008dee2ae375105)」のために作成したサンプルアプリです。
