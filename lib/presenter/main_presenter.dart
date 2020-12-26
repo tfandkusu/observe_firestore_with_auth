@@ -12,6 +12,7 @@ final logoutProvider = Provider.autoDispose((ref) async {
   return await futureAuth;
 });
 
+/// 動物リスト表示Provider
 final mainUiModelProvider = Provider.autoDispose((ref) async {
   final futureAnimalList = ref.watch(animalListStreamProvider.last);
   final futureLikeSet = ref.watch(likeSetStreamProvider.last);
@@ -23,4 +24,9 @@ final mainUiModelProvider = Provider.autoDispose((ref) async {
       .map((animal) => MainListItem(animal.name, likeSet.contains(animal.id)))
       .toList();
   return MainUiModel(items, !auth);
+});
+
+/// ログイン中プロバイダー
+final loginProgressStateProvider = StateProvider((_) {
+  return false;
 });

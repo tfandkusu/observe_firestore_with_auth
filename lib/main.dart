@@ -51,14 +51,28 @@ class MainPage extends HookWidget {
           final context = useContext();
           final futureMainUiModel = useProvider(mainUiModelProvider);
           final snapshot = useFuture(futureMainUiModel);
+          final loginProgressStateNotifier =
+              useProvider(loginProgressStateProvider);
           if (snapshot.hasData) {
             final items = snapshot.data.items
                 .map((e) => _buildListItem(context, e))
                 .toList();
             if (snapshot.data.showAuth) {
-              items.insert(0, _buildLoginButton(context));
+              items.insert(
+                  0, _buildLoginButton(context, loginProgressStateNotifier));
             }
-            return ListView(children: items);
+            return Stack(children: [
+              ListView(children: items),
+              Visibility(
+                visible: loginProgressStateNotifier.state,
+                child: Container(
+                    decoration: BoxDecoration(color: Colors.black26),
+                    constraints: BoxConstraints.expand()),
+              ),
+              Visibility(
+                  visible: loginProgressStateNotifier.state,
+                  child: Center(child: CircularProgressIndicator()))
+            ]);
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -88,7 +102,8 @@ class MainPage extends HookWidget {
     );
   }
 
-  Container _buildLoginButton(BuildContext context) {
+  Container _buildLoginButton(
+      BuildContext context, StateController<bool> loginProgressStateNotifier) {
     return Container(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
         child: SignInButton(Buttons.GitHub, onPressed: () {
@@ -97,15 +112,21 @@ class MainPage extends HookWidget {
   }
 
   Future<UserCredential> _signInWithGitHub(BuildContext context) async {
-    final GitHubSignIn gitHubSignIn = GitHubSignIn(
-        clientId: '1cb2b31d32bc47ac579f',
-        clientSecret: 'fcb4e0c691e2e7c997b8dba64f22be9821b76c02',
-        redirectUrl:
-            'https://tfandkusu-flutter-study.firebaseapp.com/__/auth/handler');
-    final result = await gitHubSignIn.signIn(context);
-    final AuthCredential githubAuthCredential =
-        GithubAuthProvider.credential(result.token);
-    return await FirebaseAuth.instance
-        .signInWithCredential(githubAuthCredential);
+    final loginProgressStateNotifier = context.read(loginProgressStateProvider);
+    loginProgressStateNotifier.state = true;
+    try {
+      final GitHubSignIn gitHubSignIn = GitHubSignIn(
+          clientId: '1cb2b31d32bc47ac579f',
+          clientSecret: 'fcb4e0c691e2e7c997b8dba64f22be9821b76c02',
+          redirectUrl:
+              'https://tfandkusu-flutter-study.firebaseapp.com/__/auth/handler');
+      final result = await gitHubSignIn.signIn(context);
+      final AuthCredential githubAuthCredential =
+          GithubAuthProvider.credential(result.token);
+      return await FirebaseAuth.instance
+          .signInWithCredential(githubAuthCredential);
+    } finally {
+      loginProgressStateNotifier.state = false;
+    }
   }
 }
