@@ -71,10 +71,18 @@ class MainPage extends HookWidget {
   }
 
   Container _buildListItem(BuildContext context, MainListItem item) {
+    Icon icon;
+    if (item.favorite) {
+      icon = Icon(Icons.favorite, color: Colors.redAccent);
+    } else {
+      icon = Icon(Icons.favorite_border, color: Colors.grey);
+    }
     final textStyle = Theme.of(context).textTheme.bodyText2;
     return Container(
       margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: Row(children: [
+        icon,
+        SizedBox(width: 16),
         Text(item.name, overflow: TextOverflow.ellipsis, style: textStyle),
       ]),
     );

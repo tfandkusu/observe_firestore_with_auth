@@ -1,5 +1,6 @@
 import 'package:animal_list/presenter/main_list_item.dart';
 import 'package:animal_list/repository/animal_repository.dart';
+import 'package:animal_list/repository/like_repository.dart';
 import 'package:animal_list/repository/user_repository.dart';
 import 'package:hooks_riverpod/all.dart';
 
@@ -13,9 +14,13 @@ final logoutProvider = Provider.autoDispose((ref) async {
 
 final mainUiModelProvider = Provider.autoDispose((ref) async {
   final futureAnimalList = ref.watch(animalListStreamProvider.last);
+  final futureLikeSet = ref.watch(likeSetStreamProvider.last);
   final futureAuth = ref.watch(authStreamProvider.last);
   final animalList = await futureAnimalList;
+  final likeSet = await futureLikeSet;
   final auth = await futureAuth;
-  final items = animalList.map((e) => MainListItem(e.name, false)).toList();
+  final items = animalList
+      .map((animal) => MainListItem(animal.name, likeSet.contains(animal.id)))
+      .toList();
   return MainUiModel(items, !auth);
 });

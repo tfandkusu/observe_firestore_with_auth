@@ -7,8 +7,7 @@ final animalListStreamProvider = StreamProvider.autoDispose((_) {
   CollectionReference ref = FirebaseFirestore.instance.collection('animals');
   return ref.snapshots().map((snapshot) {
     final list = snapshot.docs
-        .map((doc) => doc.data())
-        .map((data) => Animal(data['name']))
+        .map((doc) => Animal(doc.id, doc.data()['name']))
         .toList();
     list.sort((a, b) => a.name.compareTo(b.name));
     return list;

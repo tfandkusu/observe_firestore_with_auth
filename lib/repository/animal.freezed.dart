@@ -14,8 +14,9 @@ class _$AnimalTearOff {
   const _$AnimalTearOff();
 
 // ignore: unused_element
-  _Animal call(String name) {
+  _Animal call(String id, String name) {
     return _Animal(
+      id,
       name,
     );
   }
@@ -27,6 +28,7 @@ const $Animal = _$AnimalTearOff();
 
 /// @nodoc
 mixin _$Animal {
+  String get id;
   String get name;
 
   $AnimalCopyWith<Animal> get copyWith;
@@ -36,7 +38,7 @@ mixin _$Animal {
 abstract class $AnimalCopyWith<$Res> {
   factory $AnimalCopyWith(Animal value, $Res Function(Animal) then) =
       _$AnimalCopyWithImpl<$Res>;
-  $Res call({String name});
+  $Res call({String id, String name});
 }
 
 /// @nodoc
@@ -49,9 +51,11 @@ class _$AnimalCopyWithImpl<$Res> implements $AnimalCopyWith<$Res> {
 
   @override
   $Res call({
+    Object id = freezed,
     Object name = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed ? _value.id : id as String,
       name: name == freezed ? _value.name : name as String,
     ));
   }
@@ -62,7 +66,7 @@ abstract class _$AnimalCopyWith<$Res> implements $AnimalCopyWith<$Res> {
   factory _$AnimalCopyWith(_Animal value, $Res Function(_Animal) then) =
       __$AnimalCopyWithImpl<$Res>;
   @override
-  $Res call({String name});
+  $Res call({String id, String name});
 }
 
 /// @nodoc
@@ -76,9 +80,11 @@ class __$AnimalCopyWithImpl<$Res> extends _$AnimalCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object id = freezed,
     Object name = freezed,
   }) {
     return _then(_Animal(
+      id == freezed ? _value.id : id as String,
       name == freezed ? _value.name : name as String,
     ));
   }
@@ -86,27 +92,35 @@ class __$AnimalCopyWithImpl<$Res> extends _$AnimalCopyWithImpl<$Res>
 
 /// @nodoc
 class _$_Animal implements _Animal {
-  _$_Animal(this.name) : assert(name != null);
+  _$_Animal(this.id, this.name)
+      : assert(id != null),
+        assert(name != null);
 
+  @override
+  final String id;
   @override
   final String name;
 
   @override
   String toString() {
-    return 'Animal(name: $name)';
+    return 'Animal(id: $id, name: $name)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Animal &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(name);
 
   @override
   _$AnimalCopyWith<_Animal> get copyWith =>
@@ -114,8 +128,10 @@ class _$_Animal implements _Animal {
 }
 
 abstract class _Animal implements Animal {
-  factory _Animal(String name) = _$_Animal;
+  factory _Animal(String id, String name) = _$_Animal;
 
+  @override
+  String get id;
   @override
   String get name;
   @override
