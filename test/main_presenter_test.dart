@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/all.dart';
 
 void main() {
-  // ログインしていない時の表示確認
+  // ログインしていない時のリスト表示を確認
   test('List animals without login', () async {
     final animalList = [
       Animal('1', 'alligator'),

@@ -10,7 +10,8 @@ final likeSetStreamProvider = StreamProvider.autoDispose((ref) {
     userId = "dummyUser";
     CollectionReference cref =
         FirebaseFirestore.instance.collection('/users/$userId/likes');
-    return cref.snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()['animalId']).toSet());
+    return cref.snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => doc.data()['animalId']).toSet());
   } else {
     return Stream.value(Set<String>());
   }
