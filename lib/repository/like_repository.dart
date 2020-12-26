@@ -4,9 +4,10 @@ import 'package:hooks_riverpod/all.dart';
 
 final likeSetStreamProvider = StreamProvider.autoDispose((ref) {
   final userIdAsyncValue = ref.watch(userIdStreamProvider);
-  final userId = userIdAsyncValue?.data?.value;
+  var userId = userIdAsyncValue?.data?.value;
   if (userId != null) {
-    print(userId);
+    // サンプルコードのため、最初からユーザ固有のデータを持っているユーザのIDを使う。
+    userId = "dummyUser";
     CollectionReference cref =
         FirebaseFirestore.instance.collection('/users/$userId/likes');
     return cref.snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()['animalId']).toSet());
