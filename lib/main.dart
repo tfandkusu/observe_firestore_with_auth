@@ -119,7 +119,8 @@ class MainPage extends HookWidget {
           clientId: '1cb2b31d32bc47ac579f',
           clientSecret: 'fcb4e0c691e2e7c997b8dba64f22be9821b76c02',
           redirectUrl:
-              'https://tfandkusu-flutter-study.firebaseapp.com/__/auth/handler');
+              'https://tfandkusu-flutter-study.firebaseapp.com/__/auth/handler',
+          scope: 'user:email');
       final result = await gitHubSignIn.signIn(context);
       final AuthCredential githubAuthCredential =
           GithubAuthProvider.credential(result.token);
