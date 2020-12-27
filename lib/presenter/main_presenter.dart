@@ -36,3 +36,22 @@ final mainUiModelProvider = Provider.autoDispose((ref) async {
 final loginProgressStateProvider = StateProvider((_) {
   return false;
 });
+
+
+/// ログインのエラー情報
+enum LoginError {
+  /// エラー無し
+  SUCCESS,
+
+  /// インターネット接続でエラー
+  INTERNET,
+
+  /// 未知のエラーが発生
+  UNKNOWN
+}
+
+
+/// ログインのエラー表示
+final loginErrorStateProvider = StateProvider((_) {
+  return LoginError.SUCCESS;
+});

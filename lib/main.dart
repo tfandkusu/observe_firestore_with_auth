@@ -3,6 +3,7 @@ import 'package:animal_list/presenter/main_presenter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
@@ -53,6 +54,7 @@ class MainPage extends HookWidget {
           final snapshot = useFuture(futureMainUiModel);
           final loginProgressStateNotifier =
               useProvider(loginProgressStateProvider);
+          final progressTextStyle = Theme.of(context).textTheme.subtitle2.copyWith(color: Colors.white);
           if (snapshot.hasData) {
             final items = snapshot.data.items
                 .map((e) => _buildListItem(context, e))
@@ -61,18 +63,40 @@ class MainPage extends HookWidget {
               items.insert(
                   0, _buildLoginButton(context, loginProgressStateNotifier));
             }
-            return Stack(children: [
-              ListView(children: items),
-              Visibility(
-                visible: loginProgressStateNotifier.state,
-                child: Container(
-                    decoration: BoxDecoration(color: Colors.black26),
-                    constraints: BoxConstraints.expand()),
-              ),
-              Visibility(
+            return ProviderListener<StateController<LoginError>>(
+              provider: loginErrorStateProvider,
+              onChange: (context, error) {
+                if (error.state == LoginError.INTERNET) {
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text("インターネット接続がありません。")));
+                } else if (error.state == LoginError.UNKNOWN) {
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text("未知のエラーが発生しました。しばらくお待ちください。")));
+                }
+              },
+              child: Stack(children: [
+                ListView(children: items),
+                Visibility(
                   visible: loginProgressStateNotifier.state,
-                  child: Center(child: CircularProgressIndicator()))
-            ]);
+                  child: Container(
+                      decoration: BoxDecoration(color: Colors.black45),
+                      constraints: BoxConstraints.expand()),
+                ),
+                Visibility(
+                    visible: loginProgressStateNotifier.state,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Spacer(),
+                          Text("ログインしています", style: progressTextStyle),
+                          SizedBox(height: 16),
+                          CircularProgressIndicator(),
+                          Spacer()
+                        ],
+                      ),
+                    ))
+              ]),
+            );
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -113,6 +137,7 @@ class MainPage extends HookWidget {
 
   Future<UserCredential> _signInWithGitHub(BuildContext context) async {
     final loginProgressStateNotifier = context.read(loginProgressStateProvider);
+    final loginErrorStateNotifier = context.read(loginErrorStateProvider);
     loginProgressStateNotifier.state = true;
     try {
       final GitHubSignIn gitHubSignIn = GitHubSignIn(
@@ -126,6 +151,13 @@ class MainPage extends HookWidget {
           GithubAuthProvider.credential(result.token);
       return await FirebaseAuth.instance
           .signInWithCredential(githubAuthCredential);
+    } on PlatformException catch (e) {
+      if (e.code == 'network_error') {
+        loginErrorStateNotifier.state = LoginError.INTERNET;
+      } else {
+        loginErrorStateNotifier.state = LoginError.UNKNOWN;
+      }
+      return Future.value(null);
     } finally {
       loginProgressStateNotifier.state = false;
     }
