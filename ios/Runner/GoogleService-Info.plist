@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>204213377359-4p2bkoda9jnegnajj2lh64c7c1l83vbr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.204213377359-4p2bkoda9jnegnajj2lh64c7c1l83vbr</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCVr3LvT55U8l98sY0szpuG8FZWMAFivNk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>204213377359</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tfandkusu.animalList</string>
+	<key>PROJECT_ID</key>
+	<string>tfandkusu-flutter-study</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tfandkusu-flutter-study.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:204213377359:ios:915453b488f9abda90cd3a</string>
+	<key>DATABASE_URL</key>
+	<string>https://tfandkusu-flutter-study.firebaseio.com</string>
+</dict>
+</plist>
